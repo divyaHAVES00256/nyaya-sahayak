@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* High Contrast Mode */
+body.high-contrast {
+  --bg: #000000;
+  --text: #ffffff;
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+body.high-contrast * {
+  border-color: #ffffff !important;
+}
+
+body.high-contrast button {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  border: 2px solid #ffffff !important;
+}
+
+body.high-contrast a {
+  color: #ffff00 !important;
+}
+
+body.high-contrast select {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+body.high-contrast input {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
+
+/* Smooth font size transitions */
+body {
+  transition: font-size 0.15s ease;
+}
+
+/* Focus visible for all interactive elements */
+*:focus-visible {
+  outline: 2px solid #185FA5;
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
