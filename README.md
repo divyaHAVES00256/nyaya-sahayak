@@ -92,18 +92,6 @@ Phase 1 laid the bedrock — every interaction in the app is built on this found
 | `App.jsx` | Body class management — applies fontSize + high-contrast globally |
 | `index.css` | `.high-contrast` global styles + `prefers-reduced-motion` |
 
-### ⚙️ Store Shape (`accessibilityStore.js`)
-
-```js
-{
-  fontSize:      "normal" | "large" | "xlarge",   // body font scale
-  highContrast:  boolean,                          // black bg / white text
-  ttsEnabled:    boolean,       // default: true
-  ttsSpeed:      number,        // default: 1.0
-  ttsVoiceLang:  string,        // default: "hi-IN"
-  language:      "hindi" | "english" | "hinglish"
-}
-```
 
 ### 🗣️ TTS + STT Architecture
 
@@ -283,22 +271,6 @@ npm run dev
 ```
 
 > **Browser requirement:** Chrome or Edge recommended for full Web Speech API support (TTS + STT). Firefox supports TTS only.
-
----
-
-## ✅ Phase 2 Checklist
-
-- [x] Ashoka emblem visible in header
-- [x] All 8 legal topic cards render in Dashboard
-- [x] Sidebar highlights active topic with saffron left border
-- [x] TTS speaks on Dashboard mount (600ms delay for stability)
-- [x] Tab order: skip link → header controls → nav tabs → sidebar → main content
-- [x] High contrast mode applies correctly via `.high-contrast` body class
-- [x] `--header-height: 128px` CSS variable set on `:root` by PageShell
-- [x] Sidebar fixed at 260px, full height minus header
-- [x] No horizontal scroll at 1280px viewport width
-- [x] All interactive elements have visible focus rings
-- [x] `GovButton`, `GovBadge`, `GovCard` are the only UI primitives used
 
 ---
 
