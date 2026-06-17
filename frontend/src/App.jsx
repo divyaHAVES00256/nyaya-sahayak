@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import useAccessibilityStore from "./store/accessibilityStore";
 import SkipToContent from "./components/accessibility/SkipToContent";
 import AccessibilityToolbar from "./components/accessibility/AccessibilityToolbar";
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
 const fontSizeClassMap = {
   normal: "text-base",
@@ -36,7 +36,7 @@ export default function App() {
       <AccessibilityToolbar />
       <main id="main-content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Dashboard />} />
         </Routes>
       </main>
     </BrowserRouter>

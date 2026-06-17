@@ -1,3 +1,6 @@
+// src/constants/legalTopics.js
+// Legal topics data used by Sidebar, Dashboard, and Chat routing (Phase 3+)
+
 export const LEGAL_TOPICS = [
   {
     id: "rti",
@@ -48,24 +51,24 @@ export const LEGAL_TOPICS = [
     id: "disability",
     labelHindi: "दिव्यांग अधिकार",
     labelEnglish: "Disability Rights",
-    labelHinglish: "RPWD Rights",
+    labelHinglish: "Disability Rights",
     icon: "Accessibility",
     color: "#046A38",
     act: "RPWD Act, 2016",
   },
   {
     id: "schemes",
-    labelHindi: "सरकारी योजनाएं",
+    labelHindi: "सरकारी योजनाएँ",
     labelEnglish: "Government Schemes",
-    labelHinglish: "PM Schemes",
+    labelHinglish: "Govt Schemes",
     icon: "Building",
     color: "#FF6200",
-    act: "PM schemes & entitlements",
+    act: "PM Schemes & Entitlements",
   },
   {
     id: "fir",
     labelHindi: "प्रथम सूचना रिपोर्ट",
-    labelEnglish: "FIR & Police Complaint",
+    labelEnglish: "FIR / Police Complaint",
     labelHinglish: "FIR Filing",
     icon: "Shield",
     color: "#4A5568",

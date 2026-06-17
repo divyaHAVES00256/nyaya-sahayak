@@ -1,27 +1,26 @@
-import { useEffect } from "react";
-import {
-  Scale,
-  FileText,
-  Phone,
-  Mic,
-  ArrowRight,
-  FileText as FileTextIcon,
-  Home,
-  ShoppingBag,
-  Heart,
-  Briefcase,
-  Accessibility,
-  Building,
-  Shield,
-} from "lucide-react";
+// src/pages/Dashboard.jsx
+// Main landing page — replaces Home.jsx from Phase 1.
+// Wrapped in PageShell. Four sections:
+//   A) Welcome banner    — identity + primary CTAs
+//   B) Stats row         — 3 quick-stat GovCards
+//   C) Legal topics grid — 8 topic GovCards (4×2)
+//   D) How to use        — 3 sequential steps
+
+import { useEffect, useState } from "react";
+import { Scale, FileText, Phone, Mic, ChevronRight,
+         FileText as FileTextIcon,
+         Home, ShoppingBag, Heart, Briefcase,
+         Accessibility, Building, Shield } from "lucide-react";
 import PageShell from "../components/layout/PageShell";
 import GovCard from "../components/ui/GovCard";
 import GovBadge from "../components/ui/GovBadge";
 import GovButton from "../components/ui/GovButton";
 import { LEGAL_TOPICS } from "../constants/legalTopics";
 import { useTTS } from "../hooks/useTTS";
+import ashokaEmblem from "../assets/ashoka-emblem.svg";
 
-const iconMap = {
+// Icon map — same pattern as Sidebar so legalTopics.js stays a pure data file
+const ICON_MAP = {
   FileText,
   Home,
   ShoppingBag,
@@ -32,204 +31,434 @@ const iconMap = {
   Shield,
 };
 
-const topicBadgeColor = {
-  "#003580": "blue",
-  "#046A38": "green",
-  "#FF6200": "saffron",
-  "#C8960C": "gold",
-  "#4A5568": "grey",
-};
-
-const HOW_TO_STEPS = [
-  {
-    number: 1,
-    icon: Mic,
-    title: "Speak or Type",
-    description: "Ask your question in Hindi, English, or Hinglish",
-  },
-  {
-    number: 2,
-    icon: Scale,
-    title: "Get Guidance",
-    description: "Receive plain-language legal information instantly",
-  },
-  {
-    number: 3,
-    icon: FileTextIcon,
-    title: "Act on It",
-    description: "Download documents or get referrals to legal aid",
-  },
-];
+// Badge color per topic — maps topic accent hex to GovBadge color prop
+function accentToBadgeColor(hex) {
+  const map = {
+    "#003580": "blue",
+    "#046A38": "green",
+    "#FF6200": "saffron",
+    "#C8960C": "gold",
+    "#4A5568": "grey",
+  };
+  return map[hex] ?? "grey";
+}
 
 export default function Dashboard() {
   const { speak } = useTTS();
+  const [activeTopic, setActiveTopic] = useState("rti");
 
+  // Speak welcome message on first mount
   useEffect(() => {
     const timer = setTimeout(() => {
       speak(
         "Namaste! Nyaya Sahayak is ready. Press Tab to navigate or say your legal question."
       );
-    }, 500);
+    }, 600); // slight delay so page has settled before speaking
     return () => clearTimeout(timer);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function handleTopicClick(topic) {
+    setActiveTopic(topic.id);
+    speak(`${topic.labelEnglish} selected. ${topic.act}`);
+  }
+
+  function handleStartChat() {
+    speak("Opening legal chat. Please speak or type your question.");
+  }
+
+  function handleBrowseTopics() {
+    // Scroll the legal topics section into view and announce
+    document.getElementById("legal-topics-section")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+    speak("Showing all legal topics. Use Tab or arrow keys to browse.");
+  }
 
   return (
     <PageShell>
-      {({ activeTopic, setActiveTopic }) => (
-        <div className="max-w-5xl mx-auto space-y-8">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+          maxWidth: "1100px",
+        }}
+      >
 
-          {/* Welcome Banner */}
-          <div className="bg-[#003580] text-white rounded-lg p-6">
-            <div className="flex items-start gap-4 mb-4">
-              <div>
-                <h1 className="devanagari text-2xl font-bold mb-1">
-                  नमस्ते! <span className="font-normal text-white/80">/ Namaste!</span>
-                </h1>
-                <p className="text-white/85 text-sm leading-relaxed max-w-xl">
-                  Nyaya Sahayak is ready to assist you with legal queries in
-                  Hindi, English, or Hinglish. Select a topic from the sidebar
-                  or start a conversation below.
-                </p>
-              </div>
+        {/* ══════════════════════════════════════════
+            SECTION A — Welcome banner
+        ══════════════════════════════════════════ */}
+        <section aria-labelledby="welcome-heading">
+          <div
+            style={{
+              backgroundColor: "#003580",
+              borderRadius: "10px",
+              padding: "32px",
+              // Subtle Tiranga-inspired right-edge accent — saffron stripe
+              borderRight: "6px solid #FF6200",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Emblem + greeting row */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                marginBottom: "12px",
+              }}
+            >
+              <img
+                src={ashokaEmblem}
+                alt="Ashoka Emblem"
+                style={{ height: "52px", width: "auto", flexShrink: 0 }}
+              />
+              <h1
+                id="welcome-heading"
+                style={{
+                  margin: 0,
+                  fontFamily: "'Noto Sans Devanagari', 'Noto Sans', sans-serif",
+                  fontSize: "22px",
+                  fontWeight: 700,
+                  color: "#ffffff",
+                  lineHeight: 1.2,
+                }}
+              >
+                <span className="devanagari">नमस्ते!</span>
+                <span
+                  style={{
+                    fontFamily: "'Noto Sans', sans-serif",
+                    marginLeft: "8px",
+                    fontWeight: 400,
+                    fontSize: "18px",
+                    color: "rgba(255,255,255,0.75)",
+                  }}
+                >
+                  / Namaste!
+                </span>
+              </h1>
             </div>
-            <div className="flex flex-wrap gap-3">
-              <button
-                className="bg-white text-[#003580] font-semibold px-5 py-2 rounded text-sm flex items-center gap-2 hover:bg-[#F1F4F8] transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#003580]"
-                onClick={() => speak("Starting legal chat. Please type or speak your question.")}
+
+            {/* Subtext */}
+            <p
+              style={{
+                margin: "0 0 24px 0",
+                fontFamily: "'Noto Sans', sans-serif",
+                fontSize: "15px",
+                color: "rgba(255,255,255,0.85)",
+                lineHeight: 1.6,
+                maxWidth: "560px",
+              }}
+            >
+              Nyaya Sahayak is ready to assist you with legal queries in{" "}
+              <strong style={{ color: "#ffffff" }}>Hindi, English, or Hinglish</strong>.
+              Ask a question by voice or text — plain language, no legal jargon.
+            </p>
+
+            {/* CTA buttons */}
+            <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+              <GovButton
+                variant="secondary"
+                size="lg"
+                icon={Mic}
+                onClick={handleStartChat}
+                ariaLabel="Start legal chat — speak or type your question"
+                style={{
+                  backgroundColor: "#ffffff",
+                  color: "#003580",
+                  borderColor: "#ffffff",
+                  fontWeight: 600,
+                }}
               >
                 Start Legal Chat
-                <ArrowRight size={16} aria-hidden="true" />
-              </button>
-              <button
-                className="text-white border border-white/50 px-5 py-2 rounded text-sm hover:bg-white/15 transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#003580]"
-                onClick={() => {
-                  document.getElementById("legal-topics-section")?.scrollIntoView({ behavior: "smooth" });
-                  speak("Browse legal topics below.");
+                <ChevronRight size={16} aria-hidden="true" />
+              </GovButton>
+
+              <GovButton
+                variant="ghost"
+                size="lg"
+                onClick={handleBrowseTopics}
+                ariaLabel="Browse all legal topics"
+                style={{
+                  color: "rgba(255,255,255,0.9)",
+                  borderColor: "rgba(255,255,255,0.35)",
                 }}
               >
                 Browse Topics
-              </button>
+              </GovButton>
             </div>
           </div>
+        </section>
 
-          {/* Stats row */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* ══════════════════════════════════════════
+            SECTION B — Stats row (3 cards)
+        ══════════════════════════════════════════ */}
+        <section aria-label="Quick statistics">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3, 1fr)",
+              gap: "16px",
+            }}
+          >
+            {/* Stat 1 — Legal domains */}
             <GovCard
-              title="8 Legal Domains"
-              subtitle="Comprehensive legal aid coverage"
               icon={Scale}
+              title="8 Legal Domains"
+              subtitle="RTI, Property, Consumer, Family & more"
               accentColor="#003580"
-            >
-              <div className="pt-1">
-                <GovBadge label="Active" color="blue" />
-              </div>
-            </GovCard>
+              badge={<GovBadge label="Active" color="blue" />}
+              style={{ height: "100%" }}
+            />
 
+            {/* Stat 2 — Most used guide */}
             <GovCard
+              icon={FileTextIcon}
               title="RTI Filing Guide"
-              subtitle="Step-by-step RTI application help"
-              icon={FileText}
+              subtitle="Step-by-step application in plain Hindi"
               accentColor="#FF6200"
-            >
-              <div className="pt-1">
-                <GovBadge label="Most Used" color="saffron" />
-              </div>
-            </GovCard>
+              badge={<GovBadge label="Most Used" color="saffron" />}
+              style={{ height: "100%" }}
+            />
 
+            {/* Stat 3 — Helpline */}
             <GovCard
+              icon={Phone}
               title="Helpline 1516"
               subtitle="National Legal Services Authority"
-              icon={Phone}
               accentColor="#046A38"
-            >
-              <div className="pt-1">
-                <GovBadge label="24x7" color="green" />
-              </div>
-            </GovCard>
+              badge={<GovBadge label="24x7" color="green" />}
+              style={{ height: "100%" }}
+            />
           </div>
+        </section>
 
-          {/* Legal Topics grid */}
-          <section id="legal-topics-section" aria-labelledby="topics-heading">
-            <h2
-              id="topics-heading"
-              className="text-[#0D0D0D] font-semibold text-base mb-4"
-            >
-              कानूनी विषय /{" "}
-              <span className="text-[#4A5568] font-normal">Legal Topics</span>
-            </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-              {LEGAL_TOPICS.map((topic) => {
-                const Icon = iconMap[topic.icon];
-                const badgeColor = topicBadgeColor[topic.color] || "grey";
-                const isActive = activeTopic === topic.id;
+        {/* ══════════════════════════════════════════
+            SECTION C — Legal topics grid (4 × 2)
+        ══════════════════════════════════════════ */}
+        <section
+          id="legal-topics-section"
+          aria-labelledby="topics-heading"
+        >
+          {/* Section heading */}
+          <h2
+            id="topics-heading"
+            style={{
+              margin: "0 0 14px 0",
+              fontFamily: "'Noto Sans', sans-serif",
+              fontSize: "16px",
+              fontWeight: 600,
+              color: "#0D0D0D",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                display: "inline-block",
+                width: "4px",
+                height: "18px",
+                backgroundColor: "#FF6200",
+                borderRadius: "2px",
+                flexShrink: 0,
+              }}
+            />
+            <span className="devanagari" style={{ fontFamily: "'Noto Sans Devanagari', sans-serif" }}>
+              कानूनी विषय
+            </span>
+            <span style={{ color: "#718096", fontWeight: 400 }}>/ Legal Topics</span>
+          </h2>
 
-                return (
+          {/* 4-column grid */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
+              gap: "14px",
+            }}
+            role="list"
+            aria-label="Legal topic cards"
+          >
+            {LEGAL_TOPICS.map((topic) => {
+              const IconComponent = ICON_MAP[topic.icon];
+              const isActive = activeTopic === topic.id;
+
+              return (
+                <div key={topic.id} role="listitem">
                   <GovCard
-                    key={topic.id}
+                    icon={IconComponent}
                     title={topic.labelHindi}
                     subtitle={topic.act}
-                    icon={Icon}
                     accentColor={topic.color}
-                    onClick={() => {
-                      setActiveTopic(topic.id);
-                      speak(topic.labelEnglish + " selected");
+                    onClick={() => handleTopicClick(topic)}
+                    ariaLabel={`${topic.labelEnglish} — ${topic.act}`}
+                    badge={
+                      isActive
+                        ? <GovBadge
+                            label="Selected"
+                            color={accentToBadgeColor(topic.color)}
+                          />
+                        : undefined
+                    }
+                    style={{
+                      height: "100%",
+                      // Subtle active ring
+                      outline: isActive ? `2px solid ${topic.color}` : "none",
+                      outlineOffset: "2px",
                     }}
-                    className={isActive ? "ring-2 ring-[#FF6200]" : ""}
                   >
-                    <div className="pt-1 flex flex-wrap gap-1">
-                      <GovBadge label={topic.labelEnglish} color={badgeColor} />
-                    </div>
+                    {/* English label below the act subtitle */}
+                    <p
+                      style={{
+                        margin: 0,
+                        fontFamily: "'Noto Sans', sans-serif",
+                        fontSize: "12px",
+                        color: "#718096",
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      {topic.labelEnglish}
+                    </p>
                   </GovCard>
-                );
-              })}
-            </div>
-          </section>
+                </div>
+              );
+            })}
+          </div>
+        </section>
 
-          {/* How to Use */}
-          <section aria-labelledby="how-heading">
-            <h2
-              id="how-heading"
-              className="text-[#0D0D0D] font-semibold text-base mb-4"
-            >
-              How to Use Nyaya Sahayak
-            </h2>
-            <div className="flex flex-col sm:flex-row gap-4">
-              {HOW_TO_STEPS.map((step) => {
-                const Icon = step.icon;
-                return (
+        {/* ══════════════════════════════════════════
+            SECTION D — How to use (3 steps)
+        ══════════════════════════════════════════ */}
+        <section aria-labelledby="howto-heading">
+          <h2
+            id="howto-heading"
+            style={{
+              margin: "0 0 14px 0",
+              fontFamily: "'Noto Sans', sans-serif",
+              fontSize: "16px",
+              fontWeight: 600,
+              color: "#0D0D0D",
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <span
+              aria-hidden="true"
+              style={{
+                display: "inline-block",
+                width: "4px",
+                height: "18px",
+                backgroundColor: "#003580",
+                borderRadius: "2px",
+                flexShrink: 0,
+              }}
+            />
+            How to Use Nyaya Sahayak
+          </h2>
+
+          <div
+            style={{
+              display: "flex",
+              gap: "16px",
+              flexWrap: "wrap",
+            }}
+          >
+            {HOW_TO_STEPS.map((step) => {
+              const StepIcon = step.icon;
+              return (
+                <div
+                  key={step.number}
+                  style={{
+                    flex: "1 1 200px",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #D0D7E2",
+                    borderRadius: "8px",
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                  }}
+                >
+                  {/* Step number badge + icon in a row */}
                   <div
-                    key={step.number}
-                    className="flex-1 bg-white rounded-lg border border-[#D0D7E2] p-5 flex flex-col items-start gap-3"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "10px",
+                    }}
                   >
-                    <div className="flex items-center gap-3">
-                      <span
-                        className="w-7 h-7 rounded-full bg-[#FF6200] text-white flex items-center justify-center text-xs font-bold flex-shrink-0"
-                        aria-hidden="true"
-                      >
-                        {step.number}
-                      </span>
-                      <Icon
-                        size={20}
-                        aria-hidden="true"
-                        className="text-[#003580]"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-semibold text-sm text-[#0D0D0D]">
-                        {step.title}
-                      </p>
-                      <p className="text-xs text-[#4A5568] mt-0.5 leading-relaxed">
-                        {step.description}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </section>
+                    {/* Number badge */}
+                    <span
+                      aria-hidden="true"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        width: "26px",
+                        height: "26px",
+                        borderRadius: "50%",
+                        backgroundColor: "#FF6200",
+                        color: "#ffffff",
+                        fontFamily: "'Noto Sans', sans-serif",
+                        fontSize: "13px",
+                        fontWeight: 700,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {step.number}
+                    </span>
 
-        </div>
-      )}
+                    {/* Step icon */}
+                    <StepIcon
+                      size={22}
+                      aria-hidden="true"
+                      color="#003580"
+                    />
+                  </div>
+
+                  {/* Step text */}
+                  <p
+                    style={{
+                      margin: 0,
+                      fontFamily: "'Noto Sans', sans-serif",
+                      fontSize: "13px",
+                      color: "#4A5568",
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {step.text}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+      </div>
     </PageShell>
   );
 }
+
+// ── Step data — kept outside component to avoid re-creation on each render ──
+const HOW_TO_STEPS = [
+  {
+    number: 1,
+    icon: Mic,
+    text: "Speak or type your legal question in Hindi, English, or Hinglish — no legal terminology needed.",
+  },
+  {
+    number: 2,
+    icon: Scale,
+    text: "Get plain-language guidance on your rights, applicable laws, and next steps.",
+  },
+  {
+    number: 3,
+    icon: FileTextIcon,
+    text: "Download filled application forms, get referrals to legal aid centres, or call helpline 1516.",
+  },
+];

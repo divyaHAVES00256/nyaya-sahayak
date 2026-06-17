@@ -1,3 +1,81 @@
+// src/components/ui/GovButton.jsx
+// Reusable button — the ONLY button primitive to use from Phase 2 onward.
+// Variants: primary | secondary | ghost
+// Sizes:    sm | md | lg
+// Supports: lucide icon (left of label), disabled state, aria-label override
+
+const VARIANT_STYLES = {
+  primary: {
+    base: {
+      backgroundColor: "#003580",
+      color: "#ffffff",
+      border: "1px solid #003580",
+    },
+    hover: {
+      backgroundColor: "#002460",
+      borderColor: "#002460",
+    },
+    active: {
+      backgroundColor: "#001840",
+      borderColor: "#001840",
+    },
+  },
+  secondary: {
+    base: {
+      backgroundColor: "#ffffff",
+      color: "#003580",
+      border: "1px solid #003580",
+    },
+    hover: {
+      backgroundColor: "#F1F4F8",
+      borderColor: "#003580",
+    },
+    active: {
+      backgroundColor: "#E8EEF7",
+      borderColor: "#002460",
+    },
+  },
+  ghost: {
+    base: {
+      backgroundColor: "transparent",
+      color: "#003580",
+      border: "1px solid transparent",
+    },
+    hover: {
+      backgroundColor: "#F1F4F8",
+      borderColor: "transparent",
+    },
+    active: {
+      backgroundColor: "#E8EEF7",
+      borderColor: "transparent",
+    },
+  },
+};
+
+const SIZE_STYLES = {
+  sm: {
+    padding: "6px 12px",
+    fontSize: "12px",
+    iconSize: 14,
+    gap: "6px",
+    borderRadius: "4px",
+  },
+  md: {
+    padding: "9px 18px",
+    fontSize: "14px",
+    iconSize: 16,
+    gap: "8px",
+    borderRadius: "6px",
+  },
+  lg: {
+    padding: "12px 24px",
+    fontSize: "15px",
+    iconSize: 18,
+    gap: "10px",
+    borderRadius: "6px",
+  },
+};
+
 export default function GovButton({
   variant = "primary",
   size = "md",
@@ -6,44 +84,99 @@ export default function GovButton({
   onClick,
   ariaLabel,
   disabled = false,
-  className = "",
+  type = "button",
+  style: extraStyle,       // escape hatch for one-off overrides
+  className,
 }) {
-  const sizeClasses = {
-    sm: "px-3 py-1.5 text-xs gap-1.5",
-    md: "px-4 py-2 text-sm gap-2",
-    lg: "px-6 py-3 text-base gap-2",
-  };
+  const v = VARIANT_STYLES[variant] ?? VARIANT_STYLES.primary;
+  const s = SIZE_STYLES[size] ?? SIZE_STYLES.md;
 
-  const iconSize = { sm: 14, md: 16, lg: 18 };
+  // We manage hover/active via JS event handlers so the style stays in one
+  // source of truth — no CSS class collisions with Tailwind or index.css.
+  function handleMouseEnter(e) {
+    if (disabled) return;
+    Object.assign(e.currentTarget.style, v.hover);
+  }
+  function handleMouseLeave(e) {
+    if (disabled) return;
+    Object.assign(e.currentTarget.style, v.base);
+  }
+  function handleMouseDown(e) {
+    if (disabled) return;
+    Object.assign(e.currentTarget.style, v.active);
+  }
+  function handleMouseUp(e) {
+    if (disabled) return;
+    Object.assign(e.currentTarget.style, v.hover);
+  }
+  function handleFocus(e) {
+    e.currentTarget.style.outline = "2px solid #003580";
+    e.currentTarget.style.outlineOffset = "2px";
+  }
+  function handleBlur(e) {
+    e.currentTarget.style.outline = "none";
+    e.currentTarget.style.outlineOffset = "0";
+    // Restore base style in case focus left mid-hover
+    Object.assign(e.currentTarget.style, v.base);
+  }
 
-  const variantClasses = {
-    primary:
-      "bg-[#003580] text-white border border-[#003580] hover:bg-[#002460] hover:border-[#002460]",
-    secondary:
-      "bg-white text-[#003580] border border-[#003580] hover:bg-[#F1F4F8]",
-    ghost:
-      "bg-transparent text-[#003580] border border-transparent hover:bg-[#F1F4F8]",
+  const baseStyle = {
+    // Layout
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: `${s.gap}`,
+    // Sizing
+    padding: s.padding,
+    borderRadius: s.borderRadius,
+    // Typography
+    fontFamily: "'Noto Sans', sans-serif",
+    fontSize: s.fontSize,
+    fontWeight: 500,
+    lineHeight: 1.4,
+    whiteSpace: "nowrap",
+    // Interactivity
+    cursor: disabled ? "not-allowed" : "pointer",
+    opacity: disabled ? 0.5 : 1,
+    // Reset
+    textDecoration: "none",
+    outline: "none",
+    transition: "background-color 0.15s, border-color 0.15s, opacity 0.15s",
+    // Variant colours
+    ...v.base,
+    // Caller overrides (last, intentionally)
+    ...extraStyle,
   };
 
   return (
     <button
-      type="button"
-      onClick={onClick}
+      type={type}
       aria-label={ariaLabel}
+      aria-disabled={disabled}
       disabled={disabled}
-      className={[
-        "inline-flex items-center justify-center font-medium rounded transition-colors",
-        "focus:outline-none focus:ring-2 focus:ring-[#003580] focus:ring-offset-2",
-        sizeClasses[size] || sizeClasses.md,
-        variantClasses[variant] || variantClasses.primary,
-        disabled ? "opacity-50 cursor-not-allowed pointer-events-none" : "cursor-pointer",
-        className,
-      ]
-        .filter(Boolean)
-        .join(" ")}
+      onClick={disabled ? undefined : onClick}
+      className={className}
+      style={baseStyle}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
     >
-      {Icon && <Icon size={iconSize[size] || 16} aria-hidden="true" />}
-      {children}
+      {/* Leading icon — sized per the size token */}
+      {Icon && (
+        <Icon
+          size={s.iconSize}
+          aria-hidden="true"
+          style={{ flexShrink: 0 }}
+        />
+      )}
+
+      {/* Label */}
+      {children && (
+        <span>{children}</span>
+      )}
     </button>
   );
 }
