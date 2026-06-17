@@ -29,7 +29,7 @@
 
 ---
 
-## 🇮🇳 What is Nyaya Sahayak?
+## ⚖️ What is Nyaya Sahayak?
 
 **Nyaya Sahayak** (न्याय सहायक, *"Justice Helper"*) is a React-based legal aid chatbot built as a Government of India initiative under the Ministry of Law and Justice. It helps citizens — particularly the **visually impaired** — navigate the Indian legal system through:
 
