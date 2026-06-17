@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".frontend/assets/ashoka-emblem.svg"
+<img src="frontend/src/assets/ashoka-emblem.svg"
     height="100"
     alt="Ashoka Emblem — Government of India" 
 />
@@ -47,7 +47,7 @@ The following diagram shows the overall architecture of Nyaya Sahayak, including
 
 <div align="center">
 
-<img src=".frontend/assets/legal_chatbot_architecture"
+<img src="frontend/src/assets/legal_chatbot_architecture.svg"
      alt="Nyaya Sahayak Architecture"
      width="100%" />
 
@@ -109,16 +109,16 @@ Phase 1 laid the bedrock — every interaction in the app is built on this found
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                  Web Speech API                      │
-│                                                      │
-│   window.speechSynthesis      SpeechRecognition      │
-│         ▲                           ▲                │
-│         │                           │                │
-│    useTTS.js                   useSTT.js             │
-│  speak(text)              startListening()           │
-│  stop()                   stopListening()            │
-│  isSpeaking               transcript                 │
-│                           isListening                │
+│                  Web Speech API                     │
+│                                                     │
+│   window.speechSynthesis      SpeechRecognition     │
+│         ▲                           ▲               │
+│         │                           │               │
+│    useTTS.js                   useSTT.js            │
+│  speak(text)              startListening()          │
+│  stop()                   stopListening()           │
+│  isSpeaking               transcript                │
+│                           isListening               │
 └─────────────────────────────────────────────────────┘
          ▲                           ▲
          └──────────┬────────────────┘
@@ -330,6 +330,7 @@ nyaya-sahayak/
     ├── index.css                       ← .high-contrast, .devanagari, prefers-reduced-motion
     ├── assets/
     │   └── ashoka-emblem.svg
+    │   └── legal_chatbot_architecture.svg
     ├── constants/
     │   └── legalTopics.js              ← 8 topic definitions
     ├── store/
