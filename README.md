@@ -194,33 +194,7 @@ Total: ~128px  →  CSS variable: --header-height: 128px
 ### 📐 Page Layout
 
 ```
-┌─────────────────────────────── Full viewport width ──────────────────────────────┐
-│                        GovHeader (fixed, z-index: 1000)                          │
-├──────────────────┬───────────────────────────────────────────────────────────────┤
-│                  │                                                               │
-│   Sidebar        │                  Main Content Area                            │
-│   (fixed)        │              <main id="main-content">                         │
-│   260px wide     │              ml-[260px], bg #F1F4F8                         │
-│                  │                                                               │
-│  • Legal Topics  │  ┌──────── Welcome Banner ────────┐                           │
-│  • Active state  │  │  #003580 bg + saffron border   │                         │
-│    (saffron      │  └────────────────────────────────┘                           │
-│     left border) │                                                               │
-│                  │  ┌─── Stat ───┐ ┌─── Stat ───┐ ┌─── Stat ───┐                 │
-│  ┌────────────┐  │  │  8 Domains │ │ RTI Guide  │ │  Helpline  │                 │
-│  │   1516     │  │  └────────────┘ └────────────┘ └────────────┘                 │
-│  │  Helpline  │  │                                                               │
-│  │  Toll Free │  │  ┌──┐ ┌──┐ ┌──┐ ┌──┐  ← 4-col topic grid                      │
-│  └────────────┘  │  │  │ │  │ │  │ │  │                                          │
-│                  │  └──┘ └──┘ └──┘ └──┘                                          │
-│  v1.0 Beta • NIC │  ┌──┐ ┌──┐ ┌──┐ ┌──┐                                          │
-│                  │  └──┘ └──┘ └──┘ └──┘                                          │
-│                  │                                                               │
-│                  │  Step 1 → Step 2 → Step 3  ← How to use                       │
-├──────────────────┴───────────────────────────────────────────────────────────────┤
-│                          GovFooter (in flow)                                     │
-│     © 2025 Ministry of Law and Justice, GoI          Designed by [NIC]           │
-└──────────────────────────────────────────────────────────────────────────────────┘
+
 ```
 
 ### ⚖️ Legal Topics (`legalTopics.js`)
