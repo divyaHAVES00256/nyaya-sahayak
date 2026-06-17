@@ -143,20 +143,6 @@ Phase 1 laid the bedrock — every interaction in the app is built on this found
 
 Phase 2 gives Nyaya Sahayak its identity — modelled after [india.gov.in](https://india.gov.in) with the Tiranga palette, Noto Devanagari typography, and a layout that works for sighted and screen-reader users alike.
 
-### 🎨 Design Tokens
-
-| Token | Hex | Usage |
-|-------|-----|-------|
-| **Primary Blue** | `#003580` | Headers, sidebar, primary buttons |
-| **Accent Saffron** | `#FF6200` | Active states, badges, highlights |
-| **Accent Green** | `#046A38` | Success, online, confirmed |
-| **Page Background** | `#F1F4F8` | App background |
-| **Card Background** | `#FFFFFF` | All card surfaces |
-| **Border** | `#D0D7E2` | All borders, dividers |
-| **Gov Gold** | `#C8960C` | Emblem details, NIC badge |
-| **Text Primary** | `#0D0D0D` | Body text |
-| **Text Muted** | `#718096` | Subtitles, secondary labels |
-
 ### 🗂️ Files Delivered
 
 ```
@@ -177,20 +163,6 @@ src/
     └── Dashboard.jsx           ← Main landing page (banner + stats + topics + how-to)
 ```
 
-### 🏛️ GovHeader — Three-Zone Layout
-
-```
-┌──────────────────────────────────────────────────────────────┐  ← 28px
-│  भारत सरकार | Government of India    [Skip] [Screen Reader]  │  Zone A: Identity strip
-├──────────────────────────────────────────────────────────────┤  ← ~60px
-│  🏛 न्याय सहायक                        [🔊] [T] [◑]          │  Zone B: Emblem + controls
-│     Nyaya Sahayak — Legal Aid Assistant                      │
-├──────────────────────────────────────────────────────────────┤  ← 40px
-│  होम  |  कानूनी सहायता  |  दस्तावेज़  |  सहायता             │  Zone C: Nav tabs
-└──────────────────────────────────────────────────────────────┘
-Total: ~128px  →  CSS variable: --header-height: 128px
-```
-
 ### 📐 Page Layout
 
 ```
@@ -209,45 +181,6 @@ Total: ~128px  →  CSS variable: --header-height: 128px
 | 6 | `disability` | दिव्यांग अधिकार | Disability Rights | RPWD Act, 2016 |
 | 7 | `schemes` | सरकारी योजनाएँ | Government Schemes | PM Schemes & Entitlements |
 | 8 | `fir` | प्रथम सूचना रिपोर्ट | FIR / Police Complaint | CrPC Section 154 |
-
-### 🧱 UI Component API
-
-#### `GovButton`
-```jsx
-<GovButton
-  variant="primary"    // "primary" | "secondary" | "ghost"
-  size="md"            // "sm" | "md" | "lg"
-  icon={Mic}           // lucide component (optional)
-  onClick={handler}
-  ariaLabel="..."
-  disabled={false}
->
-  Start Legal Chat
-</GovButton>
-```
-
-#### `GovBadge`
-```jsx
-<GovBadge
-  label="Active"
-  color="blue"   // "blue" | "saffron" | "green" | "gold" | "grey"
-/>
-```
-
-#### `GovCard`
-```jsx
-<GovCard
-  title="RTI Filing Guide"
-  subtitle="RTI Act, 2005"
-  icon={FileText}
-  accentColor="#FF6200"
-  badge={<GovBadge label="Most Used" color="saffron" />}
-  onClick={() => handleSelect()}
-  ariaLabel="Right to Information — RTI Act, 2005"
->
-  Optional children content
-</GovCard>
-```
 
 ---
 
