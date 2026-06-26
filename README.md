@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="frontend/src/assets/ashoka-emblem.svg"
+<img src=".frontend/assets/ashoka-emblem.svg"
     height="100"
     alt="Ashoka Emblem — Government of India" 
 />
@@ -29,7 +29,7 @@
 
 ---
 
-## ⚖️ What is Nyaya Sahayak?
+## 🇮🇳 What is Nyaya Sahayak?
 
 **Nyaya Sahayak** (न्याय सहायक, *"Justice Helper"*) is a React-based legal aid chatbot built as a Government of India initiative under the Ministry of Law and Justice. It helps citizens — particularly the **visually impaired** — navigate the Indian legal system through:
 
@@ -47,7 +47,7 @@ The following diagram shows the overall architecture of Nyaya Sahayak, including
 
 <div align="center">
 
-<img src="frontend/src/assets/legal_chatbot_architecture.svg"
+<img src=".frontend/assets/legal_chatbot_architecture"
      alt="Nyaya Sahayak Architecture"
      width="100%" />
 
@@ -92,6 +92,18 @@ Phase 1 laid the bedrock — every interaction in the app is built on this found
 | `App.jsx` | Body class management — applies fontSize + high-contrast globally |
 | `index.css` | `.high-contrast` global styles + `prefers-reduced-motion` |
 
+### ⚙️ Store Shape (`accessibilityStore.js`)
+
+```js
+{
+  fontSize:      "normal" | "large" | "xlarge",   // body font scale
+  highContrast:  boolean,                          // black bg / white text
+  ttsEnabled:    boolean,       // default: true
+  ttsSpeed:      number,        // default: 1.0
+  ttsVoiceLang:  string,        // default: "hi-IN"
+  language:      "hindi" | "english" | "hinglish"
+}
+```
 
 ### 🗣️ TTS + STT Architecture
 
@@ -131,6 +143,20 @@ Phase 1 laid the bedrock — every interaction in the app is built on this found
 
 Phase 2 gives Nyaya Sahayak its identity — modelled after [india.gov.in](https://india.gov.in) with the Tiranga palette, Noto Devanagari typography, and a layout that works for sighted and screen-reader users alike.
 
+### 🎨 Design Tokens
+
+| Token | Hex | Usage |
+|-------|-----|-------|
+| **Primary Blue** | `#003580` | Headers, sidebar, primary buttons |
+| **Accent Saffron** | `#FF6200` | Active states, badges, highlights |
+| **Accent Green** | `#046A38` | Success, online, confirmed |
+| **Page Background** | `#F1F4F8` | App background |
+| **Card Background** | `#FFFFFF` | All card surfaces |
+| **Border** | `#D0D7E2` | All borders, dividers |
+| **Gov Gold** | `#C8960C` | Emblem details, NIC badge |
+| **Text Primary** | `#0D0D0D` | Body text |
+| **Text Muted** | `#718096` | Subtitles, secondary labels |
+
 ### 🗂️ Files Delivered
 
 ```
@@ -151,10 +177,50 @@ src/
     └── Dashboard.jsx           ← Main landing page (banner + stats + topics + how-to)
 ```
 
-### 📐 Page Layout
+### 🏛️ GovHeader — Three-Zone Layout
 
 ```
+┌──────────────────────────────────────────────────────────────┐  ← 28px
+│  भारत सरकार | Government of India    [Skip] [Screen Reader]  │  Zone A: Identity strip
+├──────────────────────────────────────────────────────────────┤  ← ~60px
+│  🏛 न्याय सहायक                        [�] [T] [◑]          │  Zone B: Emblem + controls
+│     Nyaya Sahayak — Legal Aid Assistant                      │
+├──────────────────────────────────────────────────────────────┤  ← 40px
+│  होम  |  कानूनी सहायता  |  दस्तावेज़  |  सहायता             │  Zone C: Nav tabs
+└──────────────────────────────────────────────────────────────┘
+Total: ~128px  →  CSS variable: --header-height: 128px
+```
 
+### �📐 Page Layout
+
+```
+┌─────────────────────────────── Full viewport width ──────────────────────────────┐
+│                        GovHeader (fixed, z-index: 1000)                          │
+├──────────────────┬───────────────────────────────────────────────────────────────┤
+│                  │                                                               │
+│   Sidebar        │                  Main Content Area                            │
+│   (fixed)        │              <main id="main-content">                         │
+│   260px wide     │              ml-[260px], bg #F1F4F8                         │
+│                  │                                                               │
+│  • Legal Topics  │  ┌──────── Welcome Banner ────────┐                           │
+│  • Active state  │  │  #003580 bg + saffron border   │                         │
+│    (saffron      │  └────────────────────────────────┘                           │
+│     left border) │                                                               │
+│                  │  ┌─── Stat ───┐ ┌─── Stat ───┐ ┌─── Stat ───┐                 │
+│  ┌────────────┐  │  │  8 Domains │ │ RTI Guide  │ │  Helpline  │                 │
+│  │   1516     │  │  └────────────┘ └────────────┘ └────────────┘                 │
+│  │  Helpline  │  │                                                               │
+│  │  Toll Free │  │  ┌──┐ ┌──┐ ┌──┐ ┌──┐  ← 4-col topic grid                      │
+│  └────────────┘  │  │  │ │  │ │  │ │  │                                          │
+│                  │  └──┘ └──┘ └──┘ └──┘                                          │
+│  v1.0 Beta • NIC │  ┌──┐ ┌──┐ ┌──┐ ┌──┐                                          │
+│                  │  └──┘ └──┘ └──┘ └──┘                                          │
+│                  │                                                               │
+│                  │  Step 1 → Step 2 → Step 3  ← How to use                       │
+├──────────────────┴───────────────────────────────────────────────────────────────┤
+│                          GovFooter (in flow)                                     │
+│     © 2025 Ministry of Law and Justice, GoI          Designed by [NIC]           │
+└──────────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ### ⚖️ Legal Topics (`legalTopics.js`)
@@ -169,6 +235,45 @@ src/
 | 6 | `disability` | दिव्यांग अधिकार | Disability Rights | RPWD Act, 2016 |
 | 7 | `schemes` | सरकारी योजनाएँ | Government Schemes | PM Schemes & Entitlements |
 | 8 | `fir` | प्रथम सूचना रिपोर्ट | FIR / Police Complaint | CrPC Section 154 |
+
+### 🧱 UI Component API
+
+#### `GovButton`
+```jsx
+<GovButton
+  variant="primary"    // "primary" | "secondary" | "ghost"
+  size="md"            // "sm" | "md" | "lg"
+  icon={Mic}           // lucide component (optional)
+  onClick={handler}
+  ariaLabel="..."
+  disabled={false}
+>
+  Start Legal Chat
+</GovButton>
+```
+
+#### `GovBadge`
+```jsx
+<GovBadge
+  label="Active"
+  color="blue"   // "blue" | "saffron" | "green" | "gold" | "grey"
+/>
+```
+
+#### `GovCard`
+```jsx
+<GovCard
+  title="RTI Filing Guide"
+  subtitle="RTI Act, 2005"
+  icon={FileText}
+  accentColor="#FF6200"
+  badge={<GovBadge label="Most Used" color="saffron" />}
+  onClick={() => handleSelect()}
+  ariaLabel="Right to Information — RTI Act, 2005"
+>
+  Optional children content
+</GovCard>
+```
 
 ---
 
@@ -271,6 +376,22 @@ npm run dev
 ```
 
 > **Browser requirement:** Chrome or Edge recommended for full Web Speech API support (TTS + STT). Firefox supports TTS only.
+
+---
+
+## ✅ Phase 2 Checklist
+
+- [x] Ashoka emblem visible in header
+- [x] All 8 legal topic cards render in Dashboard
+- [x] Sidebar highlights active topic with saffron left border
+- [x] TTS speaks on Dashboard mount (600ms delay for stability)
+- [x] Tab order: skip link → header controls → nav tabs → sidebar → main content
+- [x] High contrast mode applies correctly via `.high-contrast` body class
+- [x] `--header-height: 128px` CSS variable set on `:root` by PageShell
+- [x] Sidebar fixed at 260px, full height minus header
+- [x] No horizontal scroll at 1280px viewport width
+- [x] All interactive elements have visible focus rings
+- [x] `GovButton`, `GovBadge`, `GovCard` are the only UI primitives used
 
 ---
 
