@@ -5,29 +5,29 @@
 
 const COLOR_MAP = {
   blue: {
-    backgroundColor: "#E8EEF7",
-    color: "#003580",
-    border: "1px solid #B8C8E0",
+    backgroundColor: "var(--navy-light)",
+    color: "var(--navy)",
+    border: "1px solid var(--navy-border)",
   },
   saffron: {
-    backgroundColor: "#FFF0E6",
-    color: "#CC4E00",
-    border: "1px solid #FFD0AA",
+    backgroundColor: "var(--saffron-light)",
+    color: "var(--saffron)",
+    border: "1px solid var(--saffron-border)",
   },
   green: {
-    backgroundColor: "#E6F4ED",
-    color: "#046A38",
-    border: "1px solid #A8D5BC",
+    backgroundColor: "var(--green-light)",
+    color: "var(--green)",
+    border: "1px solid var(--green-border)",
   },
   gold: {
-    backgroundColor: "#FDF5E0",
-    color: "#8B6508",
-    border: "1px solid #EDD98A",
+    backgroundColor: "var(--gold-light)",
+    color: "var(--gold)",
+    border: "1px solid var(--gold-border)",
   },
   grey: {
-    backgroundColor: "#F1F4F8",
-    color: "#4A5568",
-    border: "1px solid #D0D7E2",
+    backgroundColor: "var(--bg-surface-2)",
+    color: "var(--text-secondary)",
+    border: "1px solid var(--border)",
   },
 };
 

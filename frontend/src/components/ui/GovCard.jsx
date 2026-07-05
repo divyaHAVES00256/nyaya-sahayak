@@ -48,12 +48,12 @@ export default function GovCard({
 
   const cardStyle = {
     // Surface
-    backgroundColor: "#ffffff",
+    backgroundColor: "var(--bg-surface)",
     borderRadius: "8px",
-    boxShadow: BASE_SHADOW,
+    boxShadow: "var(--shadow-card)",
     // Borders — left accent overrides the uniform border on that side
-    border: "1px solid #D0D7E2",
-    borderLeft: accentColor ? `4px solid ${accentColor}` : "1px solid #D0D7E2",
+    border: "1px solid var(--border)",
+    borderLeft: accentColor ? `4px solid ${accentColor}` : "1px solid var(--border)",
     // Layout
     display: "flex",
     flexDirection: "column",
@@ -119,8 +119,8 @@ export default function GovCard({
                   borderRadius: "8px",
                   backgroundColor: accentColor
                     ? hexToAlpha(accentColor, 0.1)
-                    : "#F1F4F8",
-                  color: accentColor ?? "#003580",
+                    : "var(--bg-surface-2)",
+                  color: accentColor ?? "var(--navy)",
                 }}
               >
                 <Icon size={20} />
@@ -136,7 +136,7 @@ export default function GovCard({
                       fontFamily: "'Noto Sans', sans-serif",
                       fontSize: "15px",
                       fontWeight: 600,
-                      color: "#0D0D0D",
+                      color: "var(--text-primary)",
                       lineHeight: 1.3,
                       // Support Devanagari titles without a separate class
                       // (Noto Sans Devanagari is loaded globally)
@@ -150,7 +150,7 @@ export default function GovCard({
                     style={{
                       fontFamily: "'Noto Sans', sans-serif",
                       fontSize: "12px",
-                      color: "#718096",
+                      color: "var(--text-muted)",
                       lineHeight: 1.4,
                       marginTop: "2px",
                     }}
@@ -177,7 +177,7 @@ export default function GovCard({
             flex: 1,
             fontFamily: "'Noto Sans', sans-serif",
             fontSize: "14px",
-            color: "#4A5568",
+            color: "var(--text-secondary)",
             lineHeight: 1.6,
           }}
         >
@@ -190,8 +190,8 @@ export default function GovCard({
 
 // ── Helpers ──
 
-const BASE_SHADOW = "0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04)";
-const HOVER_SHADOW = "0 4px 12px rgba(0,0,0,0.10), 0 2px 4px rgba(0,0,0,0.06)";
+const BASE_SHADOW = "var(--shadow-card)";
+const HOVER_SHADOW = "var(--shadow-hover)";
 
 /**
  * Convert a hex color + alpha to a CSS rgba() string.

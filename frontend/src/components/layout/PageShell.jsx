@@ -1,70 +1,54 @@
-// src/components/layout/PageShell.jsx
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import GovHeader from "./GovHeader";
 import Sidebar from "./Sidebar";
 import GovFooter from "./GovFooter";
+import useAccessibilityStore from "../../store/accessibilityStore";
 
-const HEADER_HEIGHT = 128;
-const SIDEBAR_WIDTH = 260;
-
-export default function PageShell({ children, showSidebar = true }) {
-  const [activeTab, setActiveTab] = useState("home");
+export default function PageShell({ children, showSidebar = true, activeTab, onTabChange }) {
   const [activeTopic, setActiveTopic] = useState("rti");
-  const headerRef = useRef(null);
+  const darkMode = useAccessibilityStore((s) => s.darkMode);
 
+  // Apply / remove data-theme on the html element whenever darkMode changes
   useEffect(() => {
-    document.documentElement.style.setProperty("--header-height", `${HEADER_HEIGHT}px`);
-    document.documentElement.style.setProperty("--sidebar-width", `${SIDEBAR_WIDTH}px`);
-    return () => {
-      document.documentElement.style.removeProperty("--header-height");
-      document.documentElement.style.removeProperty("--sidebar-width");
-    };
-  }, []);
+    const root = document.documentElement;
+    if (darkMode) {
+      root.setAttribute("data-theme", "dark");
+    } else {
+      root.removeAttribute("data-theme");
+    }
+  }, [darkMode]);
 
   return (
-    <>
-      <GovHeader activeTab={activeTab} onTabChange={setActiveTab} />
-      <div
-        style={{
-          display: "flex",
-          minHeight: "100vh",
-          paddingTop: `${HEADER_HEIGHT}px`,
-          backgroundColor: "#F1F4F8",
-        }}
-      >
-        {/* Sidebar is now conditionally rendered */}
+    <div
+      className="min-h-screen"
+      style={{
+        backgroundColor: "var(--bg-page)",
+        color: "var(--text-primary)",
+        transition: "background-color 0.25s ease, color 0.25s ease",
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
+      <GovHeader activeTab={activeTab ?? "home"} onTabChange={onTabChange} />
+
+      <div className="flex" style={{ paddingTop: "120px", flex: 1, minHeight: 0 }}>
         {showSidebar && (
-          <Sidebar onTopicChange={setActiveTopic} activeTopic={activeTopic} />
+          <Sidebar activeTopic={activeTopic} onTopicChange={setActiveTopic} />
         )}
 
         <div
-          style={{
-            marginLeft: showSidebar ? `${SIDEBAR_WIDTH}px` : "0",
-            flex: 1,
-            display: "flex",
-            flexDirection: "column",
-            minWidth: 0,
-            transition: "margin-left 0.2s ease",
-          }}
+          className="flex-1 flex flex-col"
+          style={{ marginLeft: showSidebar ? "260px" : 0, minHeight: 0, flex: 1 }}
         >
-          <main
-            id="main-content"
-            tabIndex={-1}
-            style={{
-              flex: 1,
-              padding: "24px",
-              outline: "none",
-              minHeight: `calc(100vh - ${HEADER_HEIGHT}px - 56px)`,
-            }}
-          >
-            {/* THE FIX: Execute the function if children is a render prop */}
+          <main id="main-content" className="flex-1 p-6" tabIndex={-1} style={{ flex: 1 }}>
             {typeof children === "function"
-              ? children({ activeTab, setActiveTab, activeTopic, setActiveTopic })
+              ? children({ activeTopic, setActiveTopic })
               : children}
           </main>
           <GovFooter />
         </div>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,79 +1,36 @@
-import React from "react";
 import { Mic2, Scale, FileDown, ChevronRight } from "lucide-react";
+import SectionHeading from "./SectionHeading";
 
-// ─── Helper: Section Heading ──────────────────────────────────────────────────
-function SectionHeading({ titleDeva, subtitle, id }) {
-  return (
-    <div className="mb-4">
-      <div
-        aria-hidden="true"
-        style={{
-          width: 32,
-          height: 3,
-          background: "#FF6200",
-          marginBottom: 8,
-          borderRadius: 0,
-        }}
-      />
-      <h2
-        id={id}
-        style={{
-          fontFamily: "'Noto Sans Devanagari', 'Noto Sans', sans-serif",
-          fontSize: 22,
-          fontWeight: 700,
-          color: "#003580",
-          margin: 0,
-          lineHeight: 1.2,
-        }}
-      >
-        {titleDeva}
-      </h2>
-      <p
-        style={{
-          fontSize: 13,
-          color: "#4A5568",
-          fontWeight: 400,
-          margin: "4px 0 0",
-        }}
-      >
-        {subtitle}
-      </p>
-    </div>
-  );
-}
+const STEPS = [
+  {
+    number:    1,
+    color:     "#FF6200",
+    colorVar:  "var(--saffron)",
+    Icon:      Mic2,
+    titleDeva: "बोलें या टाइप करें",
+    subtitle:  "Speak or type in Hindi, English, or Hinglish",
+  },
+  {
+    number:    2,
+    color:     "#003580",
+    colorVar:  "var(--navy)",
+    Icon:      Scale,
+    titleDeva: "कानूनी सलाह पाएं",
+    subtitle:  "Get plain-language legal guidance instantly",
+  },
+  {
+    number:    3,
+    color:     "#046A38",
+    colorVar:  "var(--green)",
+    Icon:      FileDown,
+    titleDeva: "दस्तावेज़ डाउनलोड करें",
+    subtitle:  "Download RTI drafts, legal notices & more",
+  },
+];
 
-// ─── Main Component ───────────────────────────────────────────────────────────
 export default function HowItWorks() {
-  const steps = [
-    {
-      number: 1,
-      color: "#FF6200",
-      Icon: Mic2,
-      titleDeva: "बोलें या टाइप करें",
-      subtitle: "Speak or type in Hindi, English, or Hinglish",
-    },
-    {
-      number: 2,
-      color: "#003580",
-      Icon: Scale,
-      titleDeva: "कानूनी सलाह पाएं",
-      subtitle: "Get plain-language legal guidance instantly",
-    },
-    {
-      number: 3,
-      color: "#046A38",
-      Icon: FileDown,
-      titleDeva: "दस्तावेज़ डाउनलोड करें",
-      subtitle: "Download RTI drafts, legal notices & more",
-    },
-  ];
-
   return (
-    <section
-      id="how-it-works"
-      aria-labelledby="how-heading"
-      style={{ marginTop: 24 }}
-    >
+    <section id="how-it-works" aria-labelledby="how-heading" style={{ marginTop: 24 }}>
       <SectionHeading
         id="how-heading"
         titleDeva="कैसे काम करता है"
@@ -81,60 +38,52 @@ export default function HowItWorks() {
       />
 
       <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 0,
-          marginTop: 16,
-        }}
         className="steps-row"
+        style={{ display: "flex", alignItems: "center", marginTop: 16 }}
       >
-        {steps.map((step, i) => (
-          <React.Fragment key={step.number}>
+        {STEPS.map((step, i) => (
+          <>
             <div
+              key={step.number}
               style={{
-                flex: 1,
-                background: "white",
-                border: "1px solid #D0D7E2",
+                flex:         1,
+                background:   "var(--bg-surface)",
+                border:       "1px solid var(--border)",
                 borderRadius: 10,
-                padding: 20,
-                textAlign: "center",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-                fontFamily: "'Noto Sans', sans-serif",
+                padding:      20,
+                textAlign:    "center",
+                boxShadow:    "var(--shadow-card)",
+                fontFamily:   "'Noto Sans', sans-serif",
+                transition:   "background 0.25s ease, border-color 0.25s ease",
               }}
             >
               {/* Step circle */}
               <div
                 aria-hidden="true"
                 style={{
-                  width: 44,
-                  height: 44,
-                  borderRadius: "50%",
-                  background: step.color,
-                  display: "flex",
-                  alignItems: "center",
+                  width:          44,
+                  height:         44,
+                  borderRadius:   "50%",
+                  background:     step.colorVar,
+                  display:        "flex",
+                  alignItems:     "center",
                   justifyContent: "center",
-                  fontSize: 18,
-                  fontWeight: 700,
-                  color: "white",
-                  margin: "0 auto",
+                  fontSize:       18,
+                  fontWeight:     700,
+                  color:          "white",
+                  margin:         "0 auto",
+                  transition:     "background 0.25s ease",
                 }}
               >
                 {step.number}
               </div>
 
               {/* Icon */}
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  marginTop: 12,
-                }}
-              >
+              <div style={{ display: "flex", justifyContent: "center", marginTop: 12 }}>
                 <step.Icon
                   size={28}
                   aria-hidden="true"
-                  style={{ color: step.color }}
+                  style={{ color: step.colorVar, transition: "color 0.25s ease" }}
                 />
               </div>
 
@@ -142,11 +91,12 @@ export default function HowItWorks() {
               <p
                 style={{
                   fontFamily: "'Noto Sans Devanagari', 'Noto Sans', sans-serif",
-                  fontSize: 14,
+                  fontSize:   14,
                   fontWeight: 600,
-                  color: "#0D0D0D",
-                  margin: "8px 0 0",
+                  color:      "var(--text-primary)",
+                  margin:     "8px 0 0",
                   lineHeight: 1.3,
+                  transition: "color 0.25s ease",
                 }}
               >
                 {step.titleDeva}
@@ -155,10 +105,11 @@ export default function HowItWorks() {
               {/* Subtitle */}
               <p
                 style={{
-                  fontSize: 12,
-                  color: "#4A5568",
+                  fontSize:   12,
+                  color:      "var(--text-secondary)",
                   lineHeight: 1.5,
-                  margin: "4px 0 0",
+                  margin:     "4px 0 0",
+                  transition: "color 0.25s ease",
                 }}
               >
                 {step.subtitle}
@@ -166,35 +117,27 @@ export default function HowItWorks() {
             </div>
 
             {/* Arrow between steps */}
-            {i < steps.length - 1 && (
+            {i < STEPS.length - 1 && (
               <div
                 aria-hidden="true"
-                className="step-arrow"
                 style={{
                   flexShrink: 0,
-                  padding: "0 8px",
-                  display: "flex",
+                  padding:    "0 8px",
+                  display:    "flex",
                   alignItems: "center",
                   paddingBottom: 20,
                 }}
               >
-                <ChevronRight size={24} style={{ color: "#D0D7E2" }} />
+                <ChevronRight size={24} style={{ color: "var(--border-strong)", transition: "color 0.25s ease" }} />
               </div>
             )}
-          </React.Fragment>
+          </>
         ))}
       </div>
 
       <style>{`
         @media (max-width: 640px) {
-          .steps-row {
-            flex-direction: column !important;
-            gap: 12px !important;
-          }
-          .steps-row .step-arrow {
-            transform: rotate(90deg);
-            padding: 0 !important;
-          }
+          .steps-row { flex-direction: column !important; gap: 12px !important; }
         }
       `}</style>
     </section>

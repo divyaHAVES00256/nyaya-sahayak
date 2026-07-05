@@ -10,7 +10,7 @@ export default function GovFooter() {
       role="contentinfo"
       aria-label="Site footer"
       style={{
-        backgroundColor: "#003580",
+        backgroundColor: "var(--navy-dark)",
         color: "#ffffff",
         padding: "16px 24px",
         display: "flex",
@@ -18,7 +18,6 @@ export default function GovFooter() {
         justifyContent: "space-between",
         flexWrap: "wrap",
         gap: "8px",
-        // Approximate height: 56px — keep in sync with PageShell min-height calc
         minHeight: "56px",
         flexShrink: 0,
       }}

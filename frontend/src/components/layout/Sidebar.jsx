@@ -57,8 +57,8 @@ export default function Sidebar({ onTopicChange }) {
         left: 0,
         width: `${SIDEBAR_WIDTH}px`,
         height: "calc(100vh - var(--header-height, 128px))",
-        backgroundColor: "#ffffff",
-        borderRight: "1px solid #D0D7E2",
+        backgroundColor: "var(--bg-surface)",
+        borderRight: "1px solid var(--border)",
         overflowY: "auto",
         overflowX: "hidden",
         display: "flex",
@@ -119,10 +119,10 @@ export default function Sidebar({ onTopicChange }) {
                     alignItems: "center",
                     gap: "12px",
                     padding: "10px 16px",
-                    background: isActive ? "#FFF5EF" : "transparent",
+                    background: isActive ? "var(--sidebar-active-bg)" : "transparent",
                     border: "none",
                     borderLeft: isActive
-                      ? "3px solid #FF6200"
+                      ? "3px solid var(--saffron)"
                       : "3px solid transparent",
                     cursor: "pointer",
                     textAlign: "left",
@@ -132,7 +132,7 @@ export default function Sidebar({ onTopicChange }) {
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) {
-                      e.currentTarget.style.background = "#F1F4F8";
+                      e.currentTarget.style.background = "var(--sidebar-hover-bg)";
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -141,7 +141,7 @@ export default function Sidebar({ onTopicChange }) {
                     }
                   }}
                   onFocus={(e) => {
-                    e.currentTarget.style.outline = "2px solid #003580";
+                    e.currentTarget.style.outline = "2px solid var(--navy)";
                     e.currentTarget.style.outlineOffset = "-2px";
                   }}
                   onBlur={(e) => {
@@ -159,7 +159,7 @@ export default function Sidebar({ onTopicChange }) {
                         justifyContent: "center",
                         width: "20px",
                         height: "20px",
-                        color: isActive ? topic.color : "#718096",
+                        color: isActive ? topic.color : "var(--text-muted)",
                         transition: "color 0.15s",
                       }}
                     >
@@ -177,7 +177,7 @@ export default function Sidebar({ onTopicChange }) {
                         fontFamily: "'Noto Sans Devanagari', sans-serif",
                         fontSize: "14px",
                         fontWeight: isActive ? 600 : 400,
-                        color: isActive ? "#003580" : "#0D0D0D",
+                        color: isActive ? "var(--navy)" : "var(--text-primary)",
                         lineHeight: 1.3,
                         transition: "color 0.15s",
                         whiteSpace: "nowrap",
@@ -193,7 +193,7 @@ export default function Sidebar({ onTopicChange }) {
                         display: "block",
                         fontFamily: "'Noto Sans', sans-serif",
                         fontSize: "11px",
-                        color: "#718096",
+                        color: "var(--text-muted)",
                         lineHeight: 1.3,
                         marginTop: "1px",
                         whiteSpace: "nowrap",
@@ -214,7 +214,7 @@ export default function Sidebar({ onTopicChange }) {
                         width: "6px",
                         height: "6px",
                         borderRadius: "50%",
-                        backgroundColor: "#FF6200",
+                        backgroundColor: "var(--saffron)",
                       }}
                     />
                   )}
@@ -230,7 +230,7 @@ export default function Sidebar({ onTopicChange }) {
         aria-hidden="true"
         style={{
           border: "none",
-          borderTop: "1px solid #D0D7E2",
+          borderTop: "1px solid var(--border)",
           margin: "4px 0",
           flexShrink: 0,
         }}
@@ -244,7 +244,7 @@ export default function Sidebar({ onTopicChange }) {
           aria-label="National Legal Services helpline 1516 — toll free, 24 hours. Click to hear details."
           style={{
             width: "100%",
-            backgroundColor: "#003580",
+            backgroundColor: "var(--navy)",
             color: "#ffffff",
             borderRadius: "8px",
             padding: "12px",
@@ -255,17 +255,17 @@ export default function Sidebar({ onTopicChange }) {
             transition: "background 0.15s",
           }}
           onFocus={(e) => {
-            e.currentTarget.style.outline = "2px solid #FF6200";
+            e.currentTarget.style.outline = "2px solid var(--saffron)";
             e.currentTarget.style.outlineOffset = "2px";
           }}
           onBlur={(e) => {
             e.currentTarget.style.outline = "none";
           }}
           onMouseEnter={(e) => {
-            e.currentTarget.style.background = "#002460";
+            e.currentTarget.style.background = "var(--navy-dark)";
           }}
           onMouseLeave={(e) => {
-            e.currentTarget.style.background = "#003580";
+            e.currentTarget.style.background = "var(--navy)";
           }}
         >
           {/* Top row: icon + title */}

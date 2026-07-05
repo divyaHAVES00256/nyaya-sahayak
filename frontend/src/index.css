@@ -1,54 +1,127 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap');
 
-/* High Contrast Mode */
-body.high-contrast {
-  --bg: #000000;
-  --text: #ffffff;
-  background-color: var(--bg) !important;
-  color: var(--text) !important;
+/* ── Light theme (default) ─────────────────────────────────────────────────── */
+:root {
+  --bg-page:        #f3f6fb;
+  --bg-surface:     #ffffff;
+  --bg-surface-2:   #f7f9fc;
+  --bg-surface-3:   #edf3fa;
+
+  --border:         #d7e1eb;
+  --border-strong:  #b8c5d7;
+
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #64748b;
+
+  --navy:           #0b3d91;
+  --navy-dark:      #082d6c;
+  --navy-light:     #e8f1ff;
+  --navy-border:    #b9cde9;
+
+  --saffron:        #d97706;
+  --saffron-hover:  #b85d00;
+  --saffron-light:  #fff4e8;
+  --saffron-border: #f7c78f;
+
+  --green:          #0f766e;
+  --green-light:    #e7f7f4;
+  --green-border:   #a8d8d1;
+
+  --gold:           #8a5a00;
+  --gold-light:     #fff7e6;
+  --gold-border:    #edc97b;
+
+  --shadow-card:    0 10px 26px rgba(11, 61, 145, 0.08);
+  --shadow-hover:   0 16px 36px rgba(11, 61, 145, 0.12);
+
+  /* Sidebar active/hover */
+  --sidebar-active-bg:  #fff5e8;
+  --sidebar-hover-bg:   #f2f6fb;
+
+  /* Hero-specific */
+  --hero-bg:        linear-gradient(135deg, #0b3d91 0%, #1358b3 55%, #0f4d92 100%);
 }
 
-body.high-contrast * {
-  border-color: #ffffff !important;
+/* ── Dark theme — deep navy with clearer contrast and softer surfaces ────── */
+[data-theme="dark"] {
+  --bg-page:        #121c24;
+  --bg-surface:     #172633;
+  --bg-surface-2:   #1d3040;
+  --bg-surface-3:   #233d4f;
+
+  --border:         #30495a;
+  --border-strong:  #47657a;
+
+  --text-primary:   #f1f5f9;
+  --text-secondary: #c3d0db;
+  --text-muted:     #8fa3b1;
+
+  --navy:           #7fb0ff;
+  --navy-dark:      #5c8fdb;
+  --navy-light:     #1a2e40;
+  --navy-border:    #3d5b74;
+
+  --saffron:        #efb56f;
+  --saffron-hover:  #e39c4c;
+  --saffron-light:  #241a10;
+  --saffron-border: #5e3f22;
+
+  --green:          #8ac9af;
+  --green-light:    #16231f;
+  --green-border:   #335148;
+
+  --gold:           #e8c983;
+  --gold-light:     #1c1710;
+  --gold-border:    #4b3a20;
+
+  --shadow-card:    0 8px 24px rgba(0, 0, 0, 0.18);
+  --shadow-hover:   0 12px 30px rgba(0, 0, 0, 0.24);
+
+  --sidebar-active-bg:   rgba(239, 181, 111, 0.12);
+  --sidebar-hover-bg:    rgba(255, 255, 255, 0.04);
+
+  --hero-bg:        linear-gradient(135deg, #183447 0%, #24506d 55%, #1f4b6d 100%);
 }
 
-body.high-contrast button {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-  border: 2px solid #ffffff !important;
+/* ── Base reset ─────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-body.high-contrast a {
-  color: #ffff00 !important;
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
-body.high-contrast select {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-body.high-contrast input {
-  background-color: #000000 !important;
-  color: #ffffff !important;
-}
-
-/* Smooth font size transitions */
 body {
-  transition: font-size 0.15s ease;
+  margin: 0;
+  font-family: 'Noto Sans', sans-serif;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.25s ease;
+  line-height: 1.5;
 }
 
-/* Focus visible for all interactive elements */
-*:focus-visible {
-  outline: 2px solid #185FA5;
+body::selection {
+  background: var(--saffron-light);
+  color: var(--text-primary);
+}
+
+.devanagari {
+  font-family: 'Noto Sans Devanagari', 'Noto Sans', sans-serif;
+}
+
+/* ── Focus visible ──────────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--navy);
   outline-offset: 2px;
 }
 
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
+/* ── Scrollbar (dark mode polish) ───────────────────────────────────────────── */
+[data-theme="dark"] * {
+  scrollbar-color: var(--border-strong) var(--bg-surface-2);
 }

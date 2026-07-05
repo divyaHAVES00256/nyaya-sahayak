@@ -7,46 +7,46 @@
 const VARIANT_STYLES = {
   primary: {
     base: {
-      backgroundColor: "#003580",
+      backgroundColor: "var(--navy)",
       color: "#ffffff",
-      border: "1px solid #003580",
+      border: "1px solid var(--navy)",
     },
     hover: {
-      backgroundColor: "#002460",
-      borderColor: "#002460",
+      backgroundColor: "var(--navy-dark)",
+      borderColor: "var(--navy-dark)",
     },
     active: {
-      backgroundColor: "#001840",
-      borderColor: "#001840",
+      backgroundColor: "#071f4d",
+      borderColor: "#071f4d",
     },
   },
   secondary: {
     base: {
-      backgroundColor: "#ffffff",
-      color: "#003580",
-      border: "1px solid #003580",
+      backgroundColor: "var(--bg-surface)",
+      color: "var(--navy)",
+      border: "1px solid var(--border-strong)",
     },
     hover: {
-      backgroundColor: "#F1F4F8",
-      borderColor: "#003580",
+      backgroundColor: "var(--bg-surface-2)",
+      borderColor: "var(--navy)",
     },
     active: {
-      backgroundColor: "#E8EEF7",
-      borderColor: "#002460",
+      backgroundColor: "var(--navy-light)",
+      borderColor: "var(--navy-dark)",
     },
   },
   ghost: {
     base: {
       backgroundColor: "transparent",
-      color: "#003580",
+      color: "var(--navy)",
       border: "1px solid transparent",
     },
     hover: {
-      backgroundColor: "#F1F4F8",
+      backgroundColor: "var(--bg-surface-2)",
       borderColor: "transparent",
     },
     active: {
-      backgroundColor: "#E8EEF7",
+      backgroundColor: "var(--navy-light)",
       borderColor: "transparent",
     },
   },
@@ -110,7 +110,7 @@ export default function GovButton({
     Object.assign(e.currentTarget.style, v.hover);
   }
   function handleFocus(e) {
-    e.currentTarget.style.outline = "2px solid #003580";
+    e.currentTarget.style.outline = "2px solid var(--navy)";
     e.currentTarget.style.outlineOffset = "2px";
   }
   function handleBlur(e) {

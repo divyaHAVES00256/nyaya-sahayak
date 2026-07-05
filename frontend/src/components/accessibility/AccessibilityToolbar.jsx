@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { Volume2, VolumeX, Type, Contrast, Globe } from "lucide-react";
+import { Volume2, VolumeX, Type, Globe } from "lucide-react";
 import useAccessibilityStore from "../../store/accessibilityStore";
 import { useTTS } from "../../hooks/useTTS";
 
@@ -24,8 +23,6 @@ export default function AccessibilityToolbar() {
     toggleTTS,
     fontSize,
     setFontSize,
-    highContrast,
-    toggleHighContrast,
     language,
     setLanguage,
   } = useAccessibilityStore();
@@ -82,19 +79,6 @@ export default function AccessibilityToolbar() {
         >
           <Type size={16} aria-hidden="true" />
           <span>{fontSizeLabels[fontSize]}</span>
-        </button>
-
-        {/* High Contrast Toggle */}
-        <button
-          onClick={toggleHighContrast}
-          aria-label={highContrast ? "Disable high contrast mode" : "Enable high contrast mode"}
-          aria-pressed={highContrast}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded text-sm font-medium border transition-colors focus:outline-none focus:ring-2 focus:ring-[#185FA5]
-            border-gray-300 text-gray-700 hover:bg-[#E6F1FB]"
-          style={highContrast ? { backgroundColor: "#000", color: "#fff", borderColor: "#fff" } : {}}
-        >
-          <Contrast size={16} aria-hidden="true" />
-          <span>Contrast</span>
         </button>
 
         {/* Language Selector */}
