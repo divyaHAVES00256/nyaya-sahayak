@@ -130,6 +130,7 @@ Phase 1 laid the bedrock — every interaction in the app is built on this found
 
 Phase 2 gives Nyaya Sahayak its identity — modelled after [india.gov.in](https://india.gov.in) with the Tiranga palette, Noto Devanagari typography, and a layout that works for sighted and screen-reader users alike.
 
+---
 
 ### ⚖️ Legal Topics (`legalTopics.js`)
 
@@ -143,45 +144,6 @@ Phase 2 gives Nyaya Sahayak its identity — modelled after [india.gov.in](https
 | 6 | `disability` | दिव्यांग अधिकार | Disability Rights | RPWD Act, 2016 |
 | 7 | `schemes` | सरकारी योजनाएँ | Government Schemes | PM Schemes & Entitlements |
 | 8 | `fir` | प्रथम सूचना रिपोर्ट | FIR / Police Complaint | CrPC Section 154 |
-
-### 🧱 UI Component API
-
-#### `GovButton`
-```jsx
-<GovButton
-  variant="primary"    // "primary" | "secondary" | "ghost"
-  size="md"            // "sm" | "md" | "lg"
-  icon={Mic}           // lucide component (optional)
-  onClick={handler}
-  ariaLabel="..."
-  disabled={false}
->
-  Start Legal Chat
-</GovButton>
-```
-
-#### `GovBadge`
-```jsx
-<GovBadge
-  label="Active"
-  color="blue"   // "blue" | "saffron" | "green" | "gold" | "grey"
-/>
-```
-
-#### `GovCard`
-```jsx
-<GovCard
-  title="RTI Filing Guide"
-  subtitle="RTI Act, 2005"
-  icon={FileText}
-  accentColor="#FF6200"
-  badge={<GovBadge label="Most Used" color="saffron" />}
-  onClick={() => handleSelect()}
-  ariaLabel="Right to Information — RTI Act, 2005"
->
-  Optional children content
-</GovCard>
-```
 
 ---
 
