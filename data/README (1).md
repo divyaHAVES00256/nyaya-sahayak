@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚖️ VadhiBot
+# ⚖️ न्याय सहायक · Nyaya Sahayak
 ### Voice-First, Multilingual AI Legal Assistant for Visually Impaired Indian Citizens
 
 *Speak your problem. Hear the law. Grounded in BNS 2023.*

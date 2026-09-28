@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".frontend/src/assets/ashoka-emblem.svg"
+<img src="frontend/src/assets/ashoka-emblem.svg"
     height="100"
     alt="Ashoka Emblem — Government of India" 
 />
@@ -47,7 +47,7 @@ The following diagram shows the overall architecture of Nyaya Sahayak, including
 
 <div align="center">
 
-<img src=".frontend/src/assets/legal_chatbot_architecture"
+<img src="frontend/src/assets/legal_chatbot_architecture.svg"
      alt="Nyaya Sahayak Architecture"
      width="100%" />
 
