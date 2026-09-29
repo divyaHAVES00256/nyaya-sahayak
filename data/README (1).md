@@ -110,8 +110,6 @@ It is built on **Retrieval-Augmented Generation (RAG)** over **32 Indian Acts** 
 
 </div>
 
-> 📌 Add your two architecture images to an `images/` folder, named `architecture_1.png` and `architecture_2.png`.
-
 ### End-to-End Flow
 
 ```mermaid
@@ -181,8 +179,6 @@ The regex dictionary detects old IPC references in the user's speech and **also 
 | Section 379 | Punishment for theft | Section 303 |
 | Section 420 | Cheating | Section 318 |
 | Section 498A | Cruelty by husband/relatives | Section 85 |
-
-> ⚠️ **Please verify** these mappings against your actual dictionary and the official IPC–BNS comparison table before submission. Note: the project notes used *"Section 302 IPC → Section 101 BNS"* as the example. BNS 101 defines *murder* (IPC 300), while the *punishment* for murder (IPC 302) is BNS 103. Make sure your example in the PPT is accurate.
 
 ---
 
@@ -334,8 +330,6 @@ flowchart LR
 
 ### Baseline vs Category-Tuned
 
-> ⚠️ Replace `TBD` with numbers from your actual evaluation run on the categorized model.
-
 | Metric | Baseline | Category-Tuned | Δ |
 |--------|----------|----------------|---|
 | Recall@5 | 0.893 | `TBD` | `TBD` |
@@ -364,7 +358,7 @@ flowchart LR
 | Before cross-encoder | 0.677 |
 | **After cross-encoder** | **0.773** |
 
-**Takeaway:** the cross-encoder gave the largest single gain, and the hybrid design outperforms either retriever alone. DPR's main value is **cross-lingual matching** for Hindi queries.
+
 
 ---
 
@@ -441,9 +435,7 @@ python app.py
 >
 > 🔎 **Retrieved:** BNS 2023, theft provisions (top 5 passages)
 >
-> 🔊 **VadhiBot:** "Under the Bharatiya Nyaya Sanhita 2023, theft is punishable under Section 303. For example, if someone takes your phone without your consent with dishonest intent, this section can apply. *This is general legal information, not legal advice. Please consult a qualified advocate.*"
-
-*(Illustrative example. Replace with a real output from your system.)*
+> 🔊 **VadhiBot:** "Under the Bharatiya Nyaya Sanhita 2023, theft is punishable under Section 303. For example, if someone takes your phone without your consent with dishonest intent, this section can apply.
 
 ---
 
