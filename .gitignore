@@ -10,6 +10,10 @@ node_modules/
 # Locally trained retrieval model weights
 backend/artifacts/mbert_dpr/
 
+# Python bytecode and cache directories
+__pycache__/
+*.py[cod]
+
 # Generated answer-quality reviews and private condition keys
 backend/evaluation/runs/
 
