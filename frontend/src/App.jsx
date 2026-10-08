@@ -21,9 +21,7 @@ function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [chatHistory, setChatHistory] = useState([
-    { id: 1, role: "assistant", text: "Hello! I am Nyaya Sahayak. How can I help you today?" },
-    { id: 2, role: "user", text: "I need help with divorce paperwork and local legal aid." },
-    { id: 3, role: "assistant", text: "You can start by checking the local legal aid office and preparing proof of residence, identity, and marriage documents." },
+    { id: 1, role: "assistant", text: "Hello! I can search the FAQ collection for a relevant legal information entry. How can I help?" },
   ]);
 
   const activeTab = location.pathname.startsWith("/legal-aid")

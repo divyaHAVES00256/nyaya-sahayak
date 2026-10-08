@@ -1,12 +1,25 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FileText, Mic, UploadCloud, Send, Sparkles, Users } from "lucide-react";
 import PageShell from "../components/layout/PageShell";
+import { useSTT } from "../hooks/useSTT";
+import { useTTS } from "../hooks/useTTS";
+import { answerLegalQuestion } from "../services/legalSearch";
 
 export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMessage }) {
   const [draft, setDraft] = useState("");
   const [assistantTyping, setAssistantTyping] = useState(false);
   const [rightTab, setRightTab] = useState("document");
   const messagesEndRef = useRef(null);
+  const { speak, stop: stopSpeaking, isSpeaking } = useTTS();
+  const {
+    startListening,
+    stopListening,
+    isListening,
+    isTranscribing,
+    languageTag,
+    isSupported,
+    errorMessage: voiceError,
+  } = useSTT(setDraft);
 
   const visibleHistory = useMemo(
     () => chatHistory.slice(-10),
@@ -17,22 +30,48 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [visibleHistory, assistantTyping]);
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     const trimmed = draft.trim();
-    if (!trimmed) return;
+    if (!trimmed || assistantTyping) return;
 
     onSendMessage({ role: "user", text: trimmed });
     setDraft("");
     setAssistantTyping(true);
 
-    window.setTimeout(() => {
+    try {
+      // Retrieval evidence goes to OpenRouter's free model router when configured.
+      const response = await answerLegalQuestion(trimmed);
+      const sourceText = response.sources
+        .map((source) => [source.cited_act, source.cited_sections].filter(Boolean).join(", "))
+        .filter((source) => source.trim() !== "" && source.trim() !== ":")
+        .join("\n");
+      const answerText = [
+        response.answer,
+        sourceText ? `Source: ${sourceText}` : "",
+        response.notice,
+      ]
+        .filter(Boolean)
+        .join("\n\n");
+
       onSendMessage({
         role: "assistant",
-        text: "I am checking the relevant laws and guidance. Please hold on while I prepare a response for you.",
+        text: answerText,
       });
+      // Read the same answer shown on screen; useTTS respects the user's TTS setting.
+      speak(answerText);
+    } catch (error) {
+      const isNetworkError = error instanceof TypeError;
+      const errorText = isNetworkError
+        ? "I couldn't reach the backend server. Make sure it is running, then try again."
+        : `I couldn't generate an answer: ${error.message}`;
+      onSendMessage({
+        role: "assistant",
+        text: errorText,
+      });
+    } finally {
       setAssistantTyping(false);
-    }, 650);
+    }
   }
 
   return (
@@ -120,9 +159,9 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
                 <div style={{ fontSize: 13, color: "rgba(248,251,255,0.72)", fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" }}>
                   Chat Stream
                 </div>
-                {assistantTyping && (
+                {(assistantTyping || isTranscribing) && (
                   <div style={{ color: "#8bd2ff", fontSize: 13, padding: "6px 12px", borderRadius: 999, backgroundColor: "rgba(77, 136, 211, 0.18)" }}>
-                    Bot is typing...
+                  {isTranscribing ? "Transcribing audio..." : "Searching FAQs..."}
                   </div>
                 )}
               </div>
@@ -170,6 +209,7 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
                 }}
               >
                 <input
+                  aria-label="Ask a legal question"
                   value={draft}
                   onChange={(event) => setDraft(event.target.value)}
                   placeholder="अपना कानूनी सवाल लिखें... / Type your legal question here..."
@@ -186,6 +226,7 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
                 />
                 <button
                   type="submit"
+                  disabled={assistantTyping}
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -197,10 +238,11 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
                     borderRadius: 14,
                     padding: "12px 18px",
                     fontWeight: 700,
-                    cursor: "pointer",
+                    cursor: assistantTyping ? "wait" : "pointer",
+                    opacity: assistantTyping ? 0.7 : 1,
                   }}
                 >
-                  Send
+                  {assistantTyping ? "Searching..." : "Send"}
                   <Send size={16} aria-hidden="true" />
                 </button>
               </form>
@@ -209,9 +251,31 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
             <div style={{ display: "grid", gridTemplateColumns: "repeat(3, minmax(0, 1fr))", gap: 12 }}>
               <button
                 type="button"
-                style={buttonChunkStyle}
+                onClick={isListening ? stopListening : startListening}
+                disabled={!isSupported || assistantTyping || isTranscribing}
+                aria-label={
+                  !isSupported
+                    ? "Voice input is not supported in this browser"
+                    : isListening
+                      ? "Stop voice input"
+                      : "Start voice input"
+                }
+                aria-pressed={isListening}
+                style={{
+                  ...buttonChunkStyle,
+                  backgroundColor: isListening ? "rgba(255, 87, 87, 0.22)" : buttonChunkStyle.backgroundColor,
+                  opacity: !isSupported || assistantTyping || isTranscribing ? 0.55 : 1,
+                  cursor: !isSupported || assistantTyping || isTranscribing ? "not-allowed" : "pointer",
+                }}
               >
-                <Mic size={16} /> Wake Bot
+                <Mic size={16} />
+                {!isSupported
+                  ? "Voice Unavailable"
+                  : isTranscribing
+                    ? "Transcribing..."
+                    : isListening
+                      ? "Stop Recording"
+                      : "Ask by Voice"}
               </button>
               <button
                 type="button"
@@ -226,6 +290,26 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
                 <Users size={16} /> Human Help
               </button>
             </div>
+            <p
+              aria-live={voiceError ? "assertive" : "polite"}
+              role={voiceError ? "alert" : "status"}
+              style={{
+                margin: "-8px 2px 0",
+                color: voiceError ? "#ffb3b3" : "rgba(248,251,255,0.65)",
+                fontSize: 12,
+              }}
+            >
+              {voiceError ||
+                (isListening
+                  ? "Recording until you press Stop. Short pauses are fine; review the transcript before sending."
+                  : isTranscribing
+                    ? "Whisper large-v3 is transcribing your recording on the backend. The first run may download the model."
+                    : languageTag
+                      ? `Detected transcript language tag(s): ${languageTag.replace("+", " + ")}. Review the transcript before sending.`
+                    : isSupported
+                      ? "Voice input is transcribed by Whisper large-v3. Hindi-English mixed-script speech receives both language tags."
+                      : "Voice input is unavailable in this browser. You can type your question instead.")}
+            </p>
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
@@ -300,7 +384,18 @@ export default function ChatPage({ activeTab, onTabChange, chatHistory, onSendMe
               <div style={{ display: "grid", gap: 12 }}>
                 <button type="button" style={panelButtonStyle}>New Chat</button>
                 <button type="button" style={panelButtonStyle}>Emergency</button>
-                <button type="button" style={panelButtonStyle}>Stop</button>
+                <button
+                  type="button"
+                  style={{
+                    ...panelButtonStyle,
+                    opacity: isSpeaking ? 1 : 0.55,
+                    cursor: isSpeaking ? "pointer" : "not-allowed",
+                  }}
+                  onClick={stopSpeaking}
+                  disabled={!isSpeaking}
+                >
+                  Stop Speaking
+                </button>
               </div>
             </div>
           </div>

@@ -7,6 +7,12 @@ node_modules/
 # Local env files
 .env
 
+# Locally trained retrieval model weights
+backend/artifacts/mbert_dpr/
+
+# Generated answer-quality reviews and private condition keys
+backend/evaluation/runs/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
